@@ -27,7 +27,10 @@ function App() {
     <div className="app">
       <div className="sidebar">
         <FriendList />
+        <FormAddFriend />
+        <Button>Add Friend</Button>
       </div>
+      <FormSplitBill />
     </div>
   );
 }
@@ -39,6 +42,9 @@ function FriendList() {
       })}
     </ul>
   );
+}
+function Button({ children }) {
+  return <button className="button">{children}</button>;
 }
 function Friend({ friend }) {
   return (
@@ -58,8 +64,39 @@ function Friend({ friend }) {
         </p>
       )}
       {/* finish conditional rendering ----------------------*/}
-      <button className="button">select</button>
+      <Button>select</Button>
     </li>
+  );
+}
+function FormAddFriend() {
+  return (
+    <form className="form-add-friend">
+      <label htmlFor="">Friend name</label>
+      <input type="text" />
+      <label htmlFor="">Image URL</label>
+      <input type="text" />
+      <Button>Add</Button>
+    </form>
+  );
+}
+function FormSplitBill() {
+  return (
+    <form className="form-split-bill">
+      <h2>split a bill with x</h2>
+
+      <label htmlFor="">bill value</label>
+      <input type="text" />
+      <label htmlFor="">Iyour expense</label>
+      <input type="text" />
+      <label htmlFor="">X's expense</label>
+      <input type="text" disabled />
+      <label htmlFor="">who is paying the bill</label>
+      <select name="" id="">
+        <option value="user">you</option>
+        <option value="friend">x</option>
+      </select>
+      <Button>Split bill</Button>
+    </form>
   );
 }
 export default App;
