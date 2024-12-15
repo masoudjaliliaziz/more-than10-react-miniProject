@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Menu from "./childComponents/Menu";
 import Cart from "./childComponents/Cart";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Fastfood() {
   const menuItem = [
     {
@@ -24,7 +25,15 @@ function Fastfood() {
     },
   ];
   const [orderedItem, setOrderedItem] = useState([]);
+  function handleOrder() {
+    toast.success("order Completed", {
+      position: "top-center",
+    });
 
+    setTimeout(() => {
+      setOrderedItem([]);
+    }, 2500);
+  }
   function handleAddToCart(value) {
     setOrderedItem((prevItems) => {
       const existItem = prevItems.find((item) => item.id === value.id);
@@ -48,8 +57,15 @@ function Fastfood() {
   }
   return (
     <div>
+      <ToastContainer autoClose={2000} />
       <Menu menuItem={menuItem} onAddToCart={handleAddToCart} />
       <Cart orderedItem={orderedItem} onClick={handleQuantity} />
+      <button
+        className="bg-green-600 text-white font-bold p-3 rounded-md hover:bg-green-800 mt-10 mx-10"
+        onClick={handleOrder}
+      >
+        order
+      </button>
     </div>
   );
 }

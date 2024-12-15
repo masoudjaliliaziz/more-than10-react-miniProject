@@ -5,9 +5,12 @@ function Cart({ orderedItem, onClick }) {
     <div className="w-8/12 rounded-lg shadow-2xl shadow-black mt-10 bg-green-600 flex flex-col p-10 gap-3 text-white">
       {orderedItem.map((order) => {
         return (
-          <div key={crypto.randomUUID()}>
+          <div
+            className="bg-green-900 p-3 w-8/12 rounded-md"
+            key={crypto.randomUUID()}
+          >
             {`${order.name} and the quantity of this is`}
-
+            <h3>{`price:${order.quantity * order.price}`}</h3>
             <div className="flex bg-white w-20 justify-around items-center p-2 text-black rounded-md ">
               <h1>{order.quantity}</h1>
               <button
