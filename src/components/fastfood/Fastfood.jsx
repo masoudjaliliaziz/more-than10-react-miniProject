@@ -24,19 +24,7 @@ function Fastfood() {
     },
   ];
   const [orderedItem, setOrderedItem] = useState([]);
-  //   function handleAddToCart(value) {
-  //     let existItem = orderedItem.find((val) => val.id === value.id);
-  //     if (existItem) {
-  //       let updatedItem = orderedItem.filter((item) => item !== existItem);
-  //       setOrderedItem([
-  //         ...updatedItem,
-  //         { ...existItem, quantity: existItem.quantity + 1 },
-  //       ]);
-  //     }else{
-  //           setOrderedItem((vals) => [...vals, value]);
-  //     }
 
-  //   }
   function handleAddToCart(value) {
     setOrderedItem((prevItems) => {
       const existItem = prevItems.find((item) => item.id === value.id);
@@ -50,11 +38,18 @@ function Fastfood() {
       }
     });
   }
-
+  function handleQuantity(value) {
+    setOrderedItem((prevItem) => {
+      const UpdatedItems = prevItem.map((item) =>
+        item.id === value.id ? { ...item, quantity: item.quantity - 1 } : item
+      );
+      return UpdatedItems.filter((item) => item.quantity !== 0);
+    });
+  }
   return (
     <div>
       <Menu menuItem={menuItem} onAddToCart={handleAddToCart} />
-      <Cart orderedItem={orderedItem} />
+      <Cart orderedItem={orderedItem} onClick={handleQuantity} />
     </div>
   );
 }
