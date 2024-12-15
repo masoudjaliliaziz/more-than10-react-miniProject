@@ -25,6 +25,12 @@ function Fastfood() {
     },
   ];
   const [orderedItem, setOrderedItem] = useState([]);
+  let calcTotalPrice = 0;
+
+  orderedItem.forEach((el) => {
+    calcTotalPrice += el.price * el.quantity;
+  });
+
   function handleOrder() {
     toast.success("order Completed", {
       position: "top-center",
@@ -59,13 +65,22 @@ function Fastfood() {
     <div>
       <ToastContainer autoClose={2000} />
       <Menu menuItem={menuItem} onAddToCart={handleAddToCart} />
-      <Cart orderedItem={orderedItem} onClick={handleQuantity} />
-      <button
-        className="bg-green-600 text-white font-bold p-3 rounded-md hover:bg-green-800 mt-10 mx-10"
-        onClick={handleOrder}
-      >
-        order
-      </button>
+      {orderedItem.length > 0 && (
+        <>
+          <Cart
+            orderedItem={orderedItem}
+            onClick={handleQuantity}
+            totalPrice={calcTotalPrice}
+          />
+
+          <button
+            className="bg-green-600 text-white font-bold p-3 rounded-md hover:bg-green-800 mt-10 mx-10"
+            onClick={handleOrder}
+          >
+            order
+          </button>
+        </>
+      )}
     </div>
   );
 }
