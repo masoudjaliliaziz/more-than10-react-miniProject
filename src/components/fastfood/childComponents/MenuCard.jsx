@@ -1,8 +1,8 @@
 import React from "react";
 
-function MenuCard({ menuItem }) {
+function MenuCard({ menuItem, onAddToCart }) {
   return (
-    <div>
+    <div className="flex gap-4">
       {menuItem.map((item) => {
         return (
           <div
@@ -13,7 +13,12 @@ function MenuCard({ menuItem }) {
             <h1 className="text-3xl font-bold text-white">{item.name}</h1>
             <p className="text-xs text-white">{item.description}</p>
             <h3 className="font-bold text-white">{item.price}$</h3>
-            <button className="bg-white p-2 w-1/4 rounded-lg font-bold">
+            <button
+              onClick={() => {
+                onAddToCart(item);
+              }}
+              className="bg-white p-2 w-1/4 rounded-lg font-bold"
+            >
               +
             </button>
           </div>
