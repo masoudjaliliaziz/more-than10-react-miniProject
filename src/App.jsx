@@ -25,13 +25,24 @@ const initialFriends = [
 function App() {
   const [friends, setFriends] = useState(initialFriends);
   const [showAddFriend, setShowAddFriend] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
   function handleShowAddFriend() {
     setShowAddFriend((cur) => !cur);
+  }
+  function handleSelection(friend) {
+    setSelectedFriend((selected) =>
+      selected?.id === friend.id ? null : friend
+    );
+    setShowAddFriend(false);
   }
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendList friends={friends} />
+        <FriendList
+          friends={friends}
+          selectedFriend={selectedFriend}
+          onClick={handleSelection}
+        />
         {showAddFriend && (
           <FormAddFriend
             setFriends={setFriends}
@@ -42,15 +53,22 @@ function App() {
           {showAddFriend ? "close" : "Add Friend"}
         </Button>
       </div>
-      <FormSplitBill />
+      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} />}
     </div>
   );
 }
-function FriendList({ friends }) {
+function FriendList({ friends, onClick, selectedFriend }) {
   return (
     <ul>
       {friends.map((friend) => {
-        return <Friend friend={friend} key={friend.id} />;
+        return (
+          <Friend
+            onClick={onClick}
+            friend={friend}
+            key={friend.id}
+            selectedFriend={selectedFriend}
+          />
+        );
       })}
     </ul>
   );
@@ -62,9 +80,11 @@ function Button({ children, onClick }) {
     </button>
   );
 }
-function Friend({ friend }) {
+function Friend({ friend, onClick, selectedFriend }) {
+  const isSelected = selectedFriend?.id === friend.id;
+  console.log(isSelected);
   return (
-    <li>
+    <li className={isSelected ? "selected" : ""}>
       <img src={friend.image} alt={friend.name} />
       <h3>{friend.name}</h3>
       {/* start conditional rendering--------------------- */}
@@ -80,7 +100,9 @@ function Friend({ friend }) {
         </p>
       )}
       {/* finish conditional rendering ----------------------*/}
-      <Button>select</Button>
+      <Button onClick={() => onClick(friend)}>
+        {isSelected ? "close" : "select"}
+      </Button>
     </li>
   );
 }
@@ -121,21 +143,21 @@ function FormAddFriend({ setFriends, onHideForm }) {
     </form>
   );
 }
-function FormSplitBill() {
+function FormSplitBill({ selectedFriend }) {
   return (
     <form className="form-split-bill">
-      <h2>split a bill with x</h2>
+      <h2>split a bill with {selectedFriend.name}</h2>
 
       <label htmlFor="">bill value</label>
       <input type="text" />
       <label htmlFor="">Iyour expense</label>
       <input type="text" />
-      <label htmlFor="">X's expense</label>
+      <label htmlFor="">{selectedFriend.name}'s expense</label>
       <input type="text" disabled />
       <label htmlFor="">who is paying the bill</label>
       <select name="" id="">
         <option value="user">you</option>
-        <option value="friend">x</option>
+        <option value="friend">{selectedFriend.name}</option>
       </select>
       <Button>Split bill</Button>
     </form>
