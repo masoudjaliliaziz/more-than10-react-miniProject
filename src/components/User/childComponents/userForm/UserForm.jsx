@@ -5,7 +5,8 @@ function UserForm({ users, setUsers }) {
   const [lastName, setLastName] = useState("");
   function handleSubmit(e) {
     e.preventDefault();
-    const id = users.map((u) => u.id).length + 1;
+    const idArr = users.map((u) => u.id);
+    const id = Math.max(...idArr) + 1;
     setUsers((cur) => [...cur, { id, name, lastName }]);
     setName("");
     setLastName("");

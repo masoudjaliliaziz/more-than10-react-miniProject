@@ -1,6 +1,6 @@
 import React from "react";
 
-function UserTrow({ user }) {
+function UserTrow({ user, onDeleteUser }) {
   return (
     <>
       {user.map((u) => {
@@ -9,6 +9,14 @@ function UserTrow({ user }) {
             <td className="border-2">{u.id}</td>
             <td className="border-2">{u.name}</td>
             <td className="border-2">{u.lastName}</td>
+            <td>
+              <button
+                onClick={() => onDeleteUser(u)}
+                className="bg-red-700 p-1 rounded-md text-white font-bold text-xs"
+              >
+                delete
+              </button>
+            </td>
           </tr>
         );
       })}

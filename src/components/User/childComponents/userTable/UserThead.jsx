@@ -7,6 +7,7 @@ function UserThead() {
         <th className="border-2 text-center">ID</th>
         <th className="border-2 text-center">NAME</th>
         <th className="border-2 text-center">LASTNAME</th>
+        <th className="border-2 text-center">ACTIONS</th>
       </tr>
     </thead>
   );

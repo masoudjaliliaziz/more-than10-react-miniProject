@@ -1,10 +1,10 @@
 import React from "react";
 import UserTrow from "./UserTrow";
 
-function UserTbody({ user }) {
+function UserTbody({ user, onDeleteUser }) {
   return (
     <tbody>
-      <UserTrow user={user} />
+      <UserTrow user={user} onDeleteUser={onDeleteUser} />
     </tbody>
   );
 }
