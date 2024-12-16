@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
-function Form() {
+function Form({ setListItems }) {
+  const [task, setTask] = useState("");
+  function handleSubmit(e) {
+    e.preventDefault();
+    setListItems((cur) => [
+      ...cur,
+      { id: crypto.randomUUID(), task, isDone: false },
+    ]);
+    setTask("");
+  }
   return (
-    <form action="" className=" w-full flex justify-center items-center">
+    <form
+      action=""
+      className=" w-full flex justify-center items-center my-7"
+      onSubmit={handleSubmit}
+    >
       <div className="w-9/12 h-14 bg-slate-200  rounded-3xl flex justify-between ">
         <input
-          className=" w-10/12 p-3 bg-slate-200 rounded-3xl outline-none"
+          value={task}
+          className=" w-10/12 p-3 bg-slate-200 rounded-3xl outline-none text-xl font-bold pl-5"
           type="text"
+          onChange={(e) => setTask(e.target.value)}
         />
         <button
           type="submit "
