@@ -1,15 +1,30 @@
 import React, { useState } from "react";
 
-function UserForm({ users, setUsers }) {
+function UserForm({ users, setUsers, selectedUser, setSelectedUser }) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   function handleSubmit(e) {
     e.preventDefault();
-    const idArr = users.map((u) => u.id);
-    const id = Math.max(...idArr) + 1;
-    setUsers((cur) => [...cur, { id, name, lastName }]);
-    setName("");
-    setLastName("");
+    if (selectedUser && selectedUser.id) {
+      setUsers((cur) =>
+        cur.map((user) =>
+          user.id === selectedUser.id
+            ? {
+                ...user,
+                name: selectedUser.name,
+                lastName: selectedUser.lastName,
+              }
+            : user
+        )
+      );
+      setSelectedUser(null);
+    } else {
+      const idArr = users.map((u) => u.id);
+      const id = Math.max(...idArr) + 1;
+      setUsers((cur) => [...cur, { id, name, lastName }]);
+      setName("");
+      setLastName("");
+    }
   }
 
   return (
@@ -20,25 +35,37 @@ function UserForm({ users, setUsers }) {
     >
       <label htmlFor="name">insert the name</label>
       <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={selectedUser ? selectedUser.name : name}
+        onChange={(e) =>
+          selectedUser
+            ? setSelectedUser((cur) => ({ ...cur, name: e.target.value }))
+            : setName(e.target.value)
+        }
         className="bg-slate-100 p-2 rounded-lg"
         type="text"
         id="name"
       />
       <label htmlFor="lastName">insert the last name</label>
       <input
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
+        value={selectedUser ? selectedUser.lastName : lastName}
+        onChange={(e) =>
+          selectedUser
+            ? setSelectedUser((cur) => ({ ...cur, lastName: e.target.value }))
+            : setLastName(e.target.value)
+        }
         className="bg-slate-100 p-2 rounded-lg"
         type="text"
         id="lastName"
       />
       <button
-        className="bg-green-700 text-white p-2 rounded-lg font-bold text-lg"
+        className={
+          selectedUser
+            ? "bg-sky-700 text-white p-2 rounded-lg font-bold text-lg"
+            : "bg-green-700 text-white p-2 rounded-lg font-bold text-lg"
+        }
         type="submit"
       >
-        insert
+        {selectedUser ? `EDIT` : `INSERT`}
       </button>
     </form>
   );
