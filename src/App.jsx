@@ -1,9 +1,8 @@
 import { list } from "postcss";
 import { useState } from "react";
-import User from "./components/User/User";
 
 function App() {
-  return <User />;
+  return <h1>hello mother fucker from the next project</h1>;
 }
 
 export default App;

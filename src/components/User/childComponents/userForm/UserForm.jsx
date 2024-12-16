@@ -35,9 +35,9 @@ function UserForm({ users, setUsers, selectedUser, setSelectedUser }) {
     >
       <label htmlFor="name">insert the name</label>
       <input
-        value={selectedUser ? selectedUser.name : name}
+        value={selectedUser && selectedUser.id ? selectedUser.name : name}
         onChange={(e) =>
-          selectedUser
+          selectedUser && selectedUser.id
             ? setSelectedUser((cur) => ({ ...cur, name: e.target.value }))
             : setName(e.target.value)
         }
@@ -47,9 +47,11 @@ function UserForm({ users, setUsers, selectedUser, setSelectedUser }) {
       />
       <label htmlFor="lastName">insert the last name</label>
       <input
-        value={selectedUser ? selectedUser.lastName : lastName}
+        value={
+          selectedUser && selectedUser.id ? selectedUser.lastName : lastName
+        }
         onChange={(e) =>
-          selectedUser
+          selectedUser && selectedUser.id
             ? setSelectedUser((cur) => ({ ...cur, lastName: e.target.value }))
             : setLastName(e.target.value)
         }
@@ -59,13 +61,13 @@ function UserForm({ users, setUsers, selectedUser, setSelectedUser }) {
       />
       <button
         className={
-          selectedUser
+          selectedUser && selectedUser.id
             ? "bg-sky-700 text-white p-2 rounded-lg font-bold text-lg"
             : "bg-green-700 text-white p-2 rounded-lg font-bold text-lg"
         }
         type="submit"
       >
-        {selectedUser ? `EDIT` : `INSERT`}
+        {selectedUser && selectedUser.id ? `EDIT` : `INSERT`}
       </button>
     </form>
   );
