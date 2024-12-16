@@ -1,9 +1,8 @@
 import { list } from "postcss";
 import { useState } from "react";
-import Todo from "./components/Todo/Todo";
 
 function App() {
-  return <Todo />;
+  return <h1>hello mother fucker from the nex session</h1>;
 }
 
 export default App;
