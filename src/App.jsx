@@ -1,9 +1,9 @@
 import { list } from "postcss";
 import { useState } from "react";
-import Fastfood from "./components/fastfood/Fastfood";
+import User from "./components/User/User";
 
 function App() {
-  return <Fastfood />;
+  return <User />;
 }
 
 export default App;
