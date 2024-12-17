@@ -2,8 +2,16 @@ import React, { useState } from "react";
 
 function Rating({ maxRating = 5 }) {
   const [rate, setRate] = useState(0);
+  const [tempRate, setTempRate] = useState(0);
+
   function handleRate(value) {
     setRate(value);
+  }
+  function handleHover(val) {
+    setTempRate(val);
+  }
+  function handleUnHover() {
+    setTempRate(0);
   }
   return (
     <div className="flex flex-row gap-3 bg-red items-center">
@@ -12,8 +20,10 @@ function Rating({ maxRating = 5 }) {
           return (
             <Star
               key={i}
-              full={rate >= i + 1}
+              full={tempRate ? tempRate >= i + 1 : rate >= i + 1}
               onRate={() => handleRate(i + 1)}
+              onMOuseIn={() => handleHover(i + 1)}
+              onMOuseOut={handleUnHover}
             />
           );
         })}
@@ -23,12 +33,14 @@ function Rating({ maxRating = 5 }) {
   );
 }
 
-export function Star({ onRate, full }) {
+export function Star({ onRate, full, onMOuseIn, onMOuseOut }) {
   return (
     <span
       className="block w-12 h-12 cursor-pointer"
       role="button"
       onClick={onRate}
+      onMouseEnter={onMOuseIn}
+      onMouseLeave={onMOuseOut}
     >
       {full ? (
         <svg
