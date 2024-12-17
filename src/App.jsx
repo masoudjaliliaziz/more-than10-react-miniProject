@@ -13,6 +13,8 @@ function App() {
           you voted this movie {msg} stars
         </h1>
       )}
+      <Rating color="blue" maxRating={10} />
+      <Rating color="yellow" maxRating={10} />
     </>
   );
 }
