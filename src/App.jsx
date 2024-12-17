@@ -1,21 +1,17 @@
 import { list } from "postcss";
 import { useState } from "react";
-
-import Rating from "./components/UsePopcorn/Rating";
+import ShowMore from "./components/showMore/ShowMore";
 
 function App() {
-  const [msg, setMsg] = useState("");
   return (
-    <>
-      <Rating setMessage={setMsg} />
-      {msg && (
-        <h1 className="text-white text-2xl">
-          you voted this movie {msg} stars
-        </h1>
-      )}
-      <Rating color="blue" maxRating={10} />
-      <Rating color="yellow" maxRating={10} />
-    </>
+    <ShowMore>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut similique
+      aliquam harum reiciendis consectetur, sit ad rerum, saepe alias quis
+      voluptatem ipsum itaque nam. Ipsa sapiente cumque error facere debitis
+      nemo magnam, dignissimos doloribus possimus repudiandae voluptate delectus
+      atque nisi provident iusto autem, amet fugit cupiditate quidem tempora
+      dicta et.
+    </ShowMore>
   );
 }
 
