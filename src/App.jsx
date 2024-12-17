@@ -1,8 +1,10 @@
 import { list } from "postcss";
 import { useState } from "react";
 
+import Rating from "./components/UsePopcorn/Rating";
+
 function App() {
-  return <h1>hello mother fucker from the nex session</h1>;
+  return <Rating />;
 }
 
 export default App;
