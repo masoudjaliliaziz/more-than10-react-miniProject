@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
-function Rating({ maxRating = 5 }) {
+function Rating({ maxRating = 5, setMessage }) {
   const [rate, setRate] = useState(0);
   const [tempRate, setTempRate] = useState(0);
 
   function handleRate(value) {
     setRate(value);
+    setMessage(value);
   }
   function handleHover(val) {
     setTempRate(val);
@@ -15,7 +16,7 @@ function Rating({ maxRating = 5 }) {
   }
   return (
     <div className="flex flex-row gap-3 bg-red items-center">
-      <div className="flex flex-row gap-1 bg-red">
+      <div className="flex flex-row bg-red">
         {Array.from({ length: maxRating }, (_, i) => {
           return (
             <Star
@@ -28,7 +29,9 @@ function Rating({ maxRating = 5 }) {
           );
         })}
       </div>
-      <p className="text-2xl text-white font-bold">{rate}</p>
+      <p className="text-2xl text-white font-bold">
+        {tempRate ? tempRate || "" : rate || ""}
+      </p>
     </div>
   );
 }
