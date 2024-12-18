@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import Navbar from "./childComponents/Navbar";
 import Main from "./childComponents/Main";
@@ -56,6 +56,14 @@ const tempWatchedData = [
 function UsePopcorn() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+  useEffect(function () {
+    fetch(
+      "http://www.omdbapi.com/?i=tt3896198&apikey=9a669649&s='interstellar'"
+    )
+      .then((res) => res.json())
+      .then((data) => setMovies(data.Search));
+  }, []);
+
   return (
     <>
       <Navbar>
