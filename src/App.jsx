@@ -1,9 +1,9 @@
 import { list } from "postcss";
 import { useState } from "react";
-import HowReactWork from "./components/how react work/HowReactWork";
+import UsePopcorn from "./components/UsePopcorn/UsePopcorn";
 
 function App() {
-  return <HowReactWork />;
+  return <UsePopcorn />;
 }
 
 export default App;
