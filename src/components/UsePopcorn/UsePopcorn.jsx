@@ -7,6 +7,7 @@ import MovieList from "./childComponents/MovieList";
 import Box from "./childComponents/Box";
 import WatchedSummary from "./childComponents/WatchedSummary";
 import WatchedMovieList from "./childComponents/WatchedMovieList";
+import Loader from "./childComponents/Loader";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -57,14 +58,16 @@ function UsePopcorn() {
   const query = "Sopranos";
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+  const [isLoding, setIsLoading] = useState(false);
   useEffect(function () {
+    setIsLoading(true);
     async function fetchMovies() {
       const res = await fetch(
         `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
       );
       const data = await res.json();
       setMovies(data.Search);
-      console.log(data.Search);
+      setIsLoading(false);
     }
     fetchMovies();
   }, []);
@@ -76,9 +79,7 @@ function UsePopcorn() {
       </Navbar>
       {/* for solve the problem of prop drilling */}
       <Main>
-        <Box>
-          <MovieList movies={movies} />
-        </Box>
+        <Box>{isLoding ? <Loader /> : <MovieList movies={movies} />}</Box>
         <Box>
           <WatchedSummary watched={watched} />
           <WatchedMovieList watched={watched} />
