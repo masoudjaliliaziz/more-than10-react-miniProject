@@ -3,7 +3,6 @@ import React from "react";
 import Navbar from "./childComponents/Navbar";
 import Main from "./childComponents/Main";
 import NumResult from "./childComponents/NumResult";
-
 import MovieList from "./childComponents/MovieList";
 import Box from "./childComponents/Box";
 import WatchedSummary from "./childComponents/WatchedSummary";
@@ -53,15 +52,21 @@ const tempWatchedData = [
     userRating: 9,
   },
 ];
+const KEY = "9a669649";
 function UsePopcorn() {
+  const query = "Sopranos";
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   useEffect(function () {
-    fetch(
-      "http://www.omdbapi.com/?i=tt3896198&apikey=9a669649&s='interstellar'"
-    )
-      .then((res) => res.json())
-      .then((data) => setMovies(data.Search));
+    async function fetchMovies() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+      console.log(data.Search);
+    }
+    fetchMovies();
   }, []);
 
   return (
