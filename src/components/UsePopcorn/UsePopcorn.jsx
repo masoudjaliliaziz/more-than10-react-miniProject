@@ -8,6 +8,7 @@ import Box from "./childComponents/Box";
 import WatchedSummary from "./childComponents/WatchedSummary";
 import WatchedMovieList from "./childComponents/WatchedMovieList";
 import Loader from "./childComponents/Loader";
+import ErrorMessage from "./childComponents/ErrorMessage";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -59,15 +60,26 @@ function UsePopcorn() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   const [isLoding, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   useEffect(function () {
     setIsLoading(true);
     async function fetchMovies() {
-      const res = await fetch(
-        `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
-      );
-      const data = await res.json();
-      setMovies(data.Search);
-      setIsLoading(false);
+      try {
+        const res = await fetch(
+          `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
+        );
+        console.log(res);
+        if (!res.ok) throw new Error("Somthing went rong with fetching movies");
+        const data = await res.json();
+        console.log(data);
+        if (data.Response === "False") throw new Error("movie not found");
+        setMovies(data.Search);
+      } catch (err) {
+        setError(err.message);
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchMovies();
   }, []);
@@ -79,7 +91,11 @@ function UsePopcorn() {
       </Navbar>
       {/* for solve the problem of prop drilling */}
       <Main>
-        <Box>{isLoding ? <Loader /> : <MovieList movies={movies} />}</Box>
+        <Box>
+          {!isLoding && !error && <MovieList movies={movies} />}
+          {isLoding && <Loader />}
+          {error && <ErrorMessage message={error} />}
+        </Box>
         <Box>
           <WatchedSummary watched={watched} />
           <WatchedMovieList watched={watched} />
