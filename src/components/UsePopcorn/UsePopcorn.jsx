@@ -10,6 +10,7 @@ import WatchedMovieList from "./childComponents/WatchedMovieList";
 import Loader from "./childComponents/Loader";
 import ErrorMessage from "./childComponents/ErrorMessage";
 import Search from "./childComponents/Search";
+import MovieDetails from "./childComponents/MovieDetails";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -62,6 +63,7 @@ function UsePopcorn() {
   const [isLoding, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("Sopranos");
+  const [selctedMovie, setSelectedMovie] = useState(null);
   useEffect(
     function () {
       setIsLoading(true);
@@ -76,7 +78,7 @@ function UsePopcorn() {
           if (!res.ok)
             throw new Error("Somthing went rong with fetching movies");
           const data = await res.json();
-
+          console.log(data);
           if (data.Response === "False") throw new Error("movie not found");
           setMovies(data.Search);
         } catch (err) {
@@ -95,7 +97,12 @@ function UsePopcorn() {
     },
     [query]
   );
-
+  function handleSelectedMovie(id) {
+    setSelectedMovie((selctedId) => (selctedId === id ? null : id));
+  }
+  function handleBack() {
+    setSelectedMovie(null);
+  }
   return (
     <>
       <Navbar>
@@ -105,13 +112,28 @@ function UsePopcorn() {
       {/* for solve the problem of prop drilling */}
       <Main>
         <Box>
-          {!isLoding && !error && <MovieList movies={movies} />}
+          {!isLoding && !error && (
+            <MovieList
+              movies={movies}
+              handleSelectedMovie={handleSelectedMovie}
+            />
+          )}
           {isLoding && <Loader />}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
+          {selctedMovie ? (
+            <MovieDetails
+              onHandleBack={handleBack}
+              selctedMovie={selctedMovie}
+            />
+          ) : (
+            <>
+              {" "}
+              <WatchedSummary watched={watched} />
+              <WatchedMovieList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
