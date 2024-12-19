@@ -9,6 +9,7 @@ import WatchedSummary from "./childComponents/WatchedSummary";
 import WatchedMovieList from "./childComponents/WatchedMovieList";
 import Loader from "./childComponents/Loader";
 import ErrorMessage from "./childComponents/ErrorMessage";
+import Search from "./childComponents/Search";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -56,37 +57,49 @@ const tempWatchedData = [
 ];
 const KEY = "9a669649";
 function UsePopcorn() {
-  const query = "Sopranos";
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   const [isLoding, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  useEffect(function () {
-    setIsLoading(true);
-    async function fetchMovies() {
-      try {
-        const res = await fetch(
-          `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
-        );
-        console.log(res);
-        if (!res.ok) throw new Error("Somthing went rong with fetching movies");
-        const data = await res.json();
-        console.log(data);
-        if (data.Response === "False") throw new Error("movie not found");
-        setMovies(data.Search);
-      } catch (err) {
-        setError(err.message);
-        console.log(error);
-      } finally {
-        setIsLoading(false);
+  const [query, setQuery] = useState("Sopranos");
+  useEffect(
+    function () {
+      setIsLoading(true);
+      async function fetchMovies() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
+          );
+
+          if (!res.ok)
+            throw new Error("Somthing went rong with fetching movies");
+          const data = await res.json();
+
+          if (data.Response === "False") throw new Error("movie not found");
+          setMovies(data.Search);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
       }
-    }
-    fetchMovies();
-  }, []);
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      } else {
+        fetchMovies();
+      }
+    },
+    [query]
+  );
 
   return (
     <>
       <Navbar>
+        <Search setQuery={setQuery} query={query} />
         <NumResult movies={movies} />
       </Navbar>
       {/* for solve the problem of prop drilling */}
