@@ -72,13 +72,13 @@ function UsePopcorn() {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
           );
 
           if (!res.ok)
             throw new Error("Somthing went rong with fetching movies");
           const data = await res.json();
-          console.log(data);
+
           if (data.Response === "False") throw new Error("movie not found");
           setMovies(data.Search);
         } catch (err) {
@@ -126,6 +126,7 @@ function UsePopcorn() {
             <MovieDetails
               onHandleBack={handleBack}
               selctedMovie={selctedMovie}
+              KEY={KEY}
             />
           ) : (
             <>
