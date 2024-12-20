@@ -48,6 +48,13 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
     },
     [selctedMovie]
   );
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+    },
+    [title]
+  );
   return (
     <div className="details">
       {isLoaded ? (
