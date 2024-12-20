@@ -59,11 +59,12 @@ const tempWatchedData = [
 const KEY = "9a669649";
 function UsePopcorn() {
   const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
   const [isLoding, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("Sopranos");
   const [selctedMovie, setSelectedMovie] = useState(null);
+  const [userRating, setUserRating] = useState(0);
   useEffect(
     function () {
       setIsLoading(true);
@@ -97,11 +98,16 @@ function UsePopcorn() {
     },
     [query]
   );
+  console.log(movies);
   function handleSelectedMovie(id) {
     setSelectedMovie((selctedId) => (selctedId === id ? null : id));
   }
   function handleBack() {
     setSelectedMovie(null);
+  }
+  function handleAdd(value) {
+    setWatched((cur) => [...cur, { ...value, userRating: userRating }]);
+    console.log(watched);
   }
   return (
     <>
@@ -127,6 +133,8 @@ function UsePopcorn() {
               onHandleBack={handleBack}
               selctedMovie={selctedMovie}
               KEY={KEY}
+              onAdd={handleAdd}
+              addUserRating={setUserRating}
             />
           ) : (
             <>

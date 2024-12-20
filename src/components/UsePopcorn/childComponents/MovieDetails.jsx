@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Rating from "./../Rating";
 import Loader from "./Loader";
-function MovieDetails({ selctedMovie, onHandleBack, KEY }) {
+function MovieDetails({
+  selctedMovie,
+  onHandleBack,
+  KEY,
+  onAdd,
+  addUserRating,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const {
@@ -16,6 +22,17 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY }) {
     Director: director,
     Genre: genre,
   } = movie;
+
+  function handleAddWatchedMovie() {
+    const newWatchedMovie = {
+      imdID: selctedMovie,
+      title,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+    };
+    onAdd(newWatchedMovie);
+  }
   useEffect(
     function () {
       setIsLoaded(true);
@@ -25,6 +42,7 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY }) {
         );
         const data = await res.json();
         setMovie(data);
+
         setIsLoaded(false);
       }
       getMoviesDetail();
@@ -56,7 +74,17 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY }) {
           </header>{" "}
           <section>
             <div className="rating">
-              <Rating color="yellow" maxRating={10} />
+              <Rating
+                setMessage={addUserRating}
+                color="yellow"
+                maxRating={10}
+              />
+              <button
+                className="btn-add"
+                onClick={() => handleAddWatchedMovie()}
+              >
+                + Add To List
+              </button>
             </div>
             <p>
               <em>{plot}</em>
