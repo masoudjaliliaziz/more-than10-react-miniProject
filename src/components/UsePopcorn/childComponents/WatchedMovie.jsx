@@ -1,6 +1,6 @@
 import React from "react";
 
-function WatchedMovie({ movie }) {
+function WatchedMovie({ movie, onDeleteWatced }) {
   return (
     <li>
       <img src={movie.poster} alt={`${movie.title} poster`} />
@@ -18,6 +18,13 @@ function WatchedMovie({ movie }) {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
+
+        <button
+          className="btn-delete"
+          onClick={() => onDeleteWatced(movie.imbdID)}
+        >
+          x
+        </button>
       </div>
     </li>
   );

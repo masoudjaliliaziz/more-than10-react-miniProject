@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Rating from "./../Rating";
 import Loader from "./Loader";
-function MovieDetails({
-  selctedMovie,
-  onHandleBack,
-  KEY,
-  onAdd,
-  addUserRating,
-}) {
+function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
   const [movie, setMovie] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [userRating, setUserRating] = useState(0);
   const {
     Title: title,
     Year: year,
@@ -22,14 +17,18 @@ function MovieDetails({
     Director: director,
     Genre: genre,
   } = movie;
-
+  const isWatched = watched.map((watch) => watch.imbdID).includes(selctedMovie);
+  const watchedUserRating = watched.find(
+    (movie) => movie.imbdID === selctedMovie
+  )?.userRating;
   function handleAddWatchedMovie() {
     const newWatchedMovie = {
-      imdID: selctedMovie,
+      imbdID: selctedMovie,
       title,
       poster,
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
+      userRating,
     };
     onAdd(newWatchedMovie);
   }
@@ -74,17 +73,26 @@ function MovieDetails({
           </header>{" "}
           <section>
             <div className="rating">
-              <Rating
-                setMessage={addUserRating}
-                color="yellow"
-                maxRating={10}
-              />
-              <button
-                className="btn-add"
-                onClick={() => handleAddWatchedMovie()}
-              >
-                + Add To List
-              </button>
+              {!isWatched ? (
+                <>
+                  {" "}
+                  <Rating
+                    setMessage={setUserRating}
+                    color="yellow"
+                    maxRating={10}
+                  />
+                  {userRating > 0 && (
+                    <button
+                      className="btn-add"
+                      onClick={() => handleAddWatchedMovie()}
+                    >
+                      + Add To List
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>you voted this movie {watchedUserRating}</p>
+              )}
             </div>
             <p>
               <em>{plot}</em>

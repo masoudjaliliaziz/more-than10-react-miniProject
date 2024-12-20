@@ -34,28 +34,7 @@ const tempMovieData = [
       "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
   },
 ];
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
+
 const KEY = "9a669649";
 function UsePopcorn() {
   const [movies, setMovies] = useState(tempMovieData);
@@ -64,7 +43,7 @@ function UsePopcorn() {
   const [error, setError] = useState("");
   const [query, setQuery] = useState("Sopranos");
   const [selctedMovie, setSelectedMovie] = useState(null);
-  const [userRating, setUserRating] = useState(0);
+
   useEffect(
     function () {
       setIsLoading(true);
@@ -98,7 +77,9 @@ function UsePopcorn() {
     },
     [query]
   );
-  console.log(movies);
+  function handleDeleteWatched(id) {
+    setWatched((cur) => cur.filter((wat) => wat.imbdID !== id));
+  }
   function handleSelectedMovie(id) {
     setSelectedMovie((selctedId) => (selctedId === id ? null : id));
   }
@@ -106,8 +87,8 @@ function UsePopcorn() {
     setSelectedMovie(null);
   }
   function handleAdd(value) {
-    setWatched((cur) => [...cur, { ...value, userRating: userRating }]);
-    console.log(watched);
+    setWatched((cur) => [...cur, value]);
+    setSelectedMovie(null);
   }
   return (
     <>
@@ -134,13 +115,16 @@ function UsePopcorn() {
               selctedMovie={selctedMovie}
               KEY={KEY}
               onAdd={handleAdd}
-              addUserRating={setUserRating}
+              watched={watched}
             />
           ) : (
             <>
               {" "}
               <WatchedSummary watched={watched} />
-              <WatchedMovieList watched={watched} />
+              <WatchedMovieList
+                watched={watched}
+                onDeleteWatced={handleDeleteWatched}
+              />
             </>
           )}
         </Box>
