@@ -1,9 +1,9 @@
 import { list } from "postcss";
 import { useState } from "react";
-import UsePopcorn from "./components/UsePopcorn/UsePopcorn";
+import Currency from "./components/CurrencyConverter/Currency";
 
 function App() {
-  return <UsePopcorn />;
+  return <Currency />;
 }
 
 export default App;
