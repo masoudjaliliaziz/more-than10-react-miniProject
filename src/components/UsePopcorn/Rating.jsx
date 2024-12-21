@@ -40,7 +40,7 @@ function Rating({ maxRating = 5, setMessage, color = "white" }) {
 export function Star({ onRate, full, onMOuseIn, onMOuseOut, color }) {
   return (
     <span
-      className="block w-12 h-12 cursor-pointer"
+      className="block w-10 h-10 cursor-pointer"
       role="button"
       onClick={onRate}
       onMouseEnter={onMOuseIn}
