@@ -41,18 +41,20 @@ function UsePopcorn() {
   const [watched, setWatched] = useState([]);
   const [isLoding, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("Sopranos");
+  const [query, setQuery] = useState("");
   const [selctedMovie, setSelectedMovie] = useState(null);
 
   useEffect(
     function () {
+      const controller = new AbortController();
       setIsLoading(true);
       async function fetchMovies() {
         try {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            { signal: controller.signal }
           );
 
           if (!res.ok)
@@ -62,6 +64,9 @@ function UsePopcorn() {
           if (data.Response === "False") throw new Error("movie not found");
           setMovies(data.Search);
         } catch (err) {
+          if (err.name !== "AbortError") {
+            setError(err.message);
+          }
           setError(err.message);
         } finally {
           setIsLoading(false);
@@ -72,7 +77,11 @@ function UsePopcorn() {
         setError("");
         return;
       } else {
+        handleBack();
         fetchMovies();
+        return function () {
+          controller.abort();
+        };
       }
     },
     [query]

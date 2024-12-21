@@ -52,9 +52,30 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
     function () {
       if (!title) return;
       document.title = `Movie | ${title}`;
+      return function () {
+        document.title = "usePopcorn";
+      };
     },
+
     [title]
   );
+
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          console.log("closing");
+          onHandleBack();
+        }
+      }
+      document.addEventListener("keydown", callback);
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onHandleBack]
+  );
+
   return (
     <div className="details">
       {isLoaded ? (
