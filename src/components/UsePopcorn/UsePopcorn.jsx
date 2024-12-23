@@ -11,6 +11,8 @@ import Loader from "./childComponents/Loader";
 import ErrorMessage from "./childComponents/ErrorMessage";
 import Search from "./childComponents/Search";
 import MovieDetails from "./childComponents/MovieDetails";
+import useMovies from "./customHooks/useMovies";
+import useLocalStoredState from "./customHooks/useLocalStoredState";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -37,55 +39,10 @@ const tempMovieData = [
 
 const KEY = "9a669649";
 function UsePopcorn() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState([]);
-  const [isLoding, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selctedMovie, setSelectedMovie] = useState(null);
-
-  useEffect(
-    function () {
-      const controller = new AbortController();
-      setIsLoading(true);
-      async function fetchMovies() {
-        try {
-          setIsLoading(true);
-          setError("");
-          const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-            { signal: controller.signal }
-          );
-
-          if (!res.ok)
-            throw new Error("Somthing went rong with fetching movies");
-          const data = await res.json();
-
-          if (data.Response === "False") throw new Error("movie not found");
-          setMovies(data.Search);
-        } catch (err) {
-          if (err.name !== "AbortError") {
-            setError(err.message);
-          }
-          setError(err.message);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      if (query.length < 3) {
-        setMovies([]);
-        setError("");
-        return;
-      } else {
-        handleBack();
-        fetchMovies();
-        return function () {
-          controller.abort();
-        };
-      }
-    },
-    [query]
-  );
+  const { movies, isLoding, error } = useMovies(query, KEY);
+  const [watched, setWatched] = useLocalStoredState([], "watched");
   function handleDeleteWatched(id) {
     setWatched((cur) => cur.filter((wat) => wat.imbdID !== id));
   }
