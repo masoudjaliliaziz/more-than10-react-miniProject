@@ -38,12 +38,20 @@ const tempMovieData = [
 const KEY = "9a669649";
 function UsePopcorn() {
   const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(() => {
+    const whatcedLocal = localStorage.getItem("watched");
+    return JSON.parse(whatcedLocal);
+  });
   const [isLoding, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selctedMovie, setSelectedMovie] = useState(null);
-
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
   useEffect(
     function () {
       const controller = new AbortController();
