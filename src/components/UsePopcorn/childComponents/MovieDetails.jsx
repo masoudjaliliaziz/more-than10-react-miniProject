@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Rating from "./../Rating";
 import Loader from "./Loader";
+import useKey from "../customHooks/useKey";
 function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
   const [movie, setMovie] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -64,22 +65,22 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
 
     [title]
   );
-
-  useEffect(
-    function () {
-      function callback(e) {
-        if (e.code === "Escape") {
-          console.log("closing");
-          onHandleBack();
-        }
-      }
-      document.addEventListener("keydown", callback);
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [onHandleBack]
-  );
+  useKey("Escape", onHandleBack);
+  // useEffect(
+  //   function () {
+  //     function callback(e) {
+  //       if (e.code === "Escape") {
+  //         console.log("closing");
+  //         onHandleBack();
+  //       }
+  //     }
+  //     document.addEventListener("keydown", callback);
+  //     return function () {
+  //       document.removeEventListener("keydown", callback);
+  //     };
+  //   },
+  //   [onHandleBack]
+  // );
 
   return (
     <div className="details">
