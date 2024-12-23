@@ -12,6 +12,7 @@ import ErrorMessage from "./childComponents/ErrorMessage";
 import Search from "./childComponents/Search";
 import MovieDetails from "./childComponents/MovieDetails";
 import useMovies from "./customHooks/useMovies";
+import useLocalStoredState from "./customHooks/useLocalStoredState";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -38,21 +39,10 @@ const tempMovieData = [
 
 const KEY = "9a669649";
 function UsePopcorn() {
-  const [watched, setWatched] = useState(() => {
-    const whatcedLocal = localStorage.getItem("watched");
-    return JSON.parse(whatcedLocal);
-  });
-
   const [query, setQuery] = useState("");
   const [selctedMovie, setSelectedMovie] = useState(null);
   const { movies, isLoding, error } = useMovies(query, KEY);
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
-
+  const [watched, setWatched] = useLocalStoredState([], "watched");
   function handleDeleteWatched(id) {
     setWatched((cur) => cur.filter((wat) => wat.imbdID !== id));
   }
