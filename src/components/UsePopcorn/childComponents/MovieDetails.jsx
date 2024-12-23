@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Rating from "./../Rating";
 import Loader from "./Loader";
 function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
@@ -17,6 +17,10 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
     Director: director,
     Genre: genre,
   } = movie;
+  const countRef = useRef(0);
+  useEffect(() => {
+    if (userRating) countRef.current++;
+  }, [userRating]);
   const isWatched = watched.map((watch) => watch.imbdID).includes(selctedMovie);
   const watchedUserRating = watched.find(
     (movie) => movie.imbdID === selctedMovie
@@ -29,6 +33,7 @@ function MovieDetails({ selctedMovie, onHandleBack, KEY, onAdd, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecisions: countRef.current,
     };
     onAdd(newWatchedMovie);
   }
