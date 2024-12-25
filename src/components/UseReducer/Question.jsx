@@ -2,14 +2,15 @@ import React, { useEffect, useReducer } from "react";
 import Header from "./childComponents/Header";
 import Main from "./childComponents/Main";
 import { data } from "autoprefixer";
-import loader from "./childComponents/Loader";
+
 import Error from "./childComponents/Error";
 import StartScreen from "./childComponents/StartScreen";
-import Loader from "./childComponents/Loader";
+
 import Quiz from "./childComponents/Quiz";
 import NextBtn from "./childComponents/NextBtn";
 import Progress from "./childComponents/Progress";
 import FinishedScreen from "./childComponents/FinishedScreen";
+import Loaderr from "./childComponents/Loaderr";
 
 const initialState = {
   questions: [],
@@ -46,6 +47,13 @@ function reducer(state, action) {
         highscore:
           state.points > state.highscore ? state.points : state.highscore,
       };
+    case "reset":
+      return {
+        ...initialState,
+        questions: state.questions,
+        highscore: state.highscore,
+        status: "ready",
+      };
     default:
       return state;
   }
@@ -69,7 +77,7 @@ function Question() {
     <div className="app">
       <Header />
       <Main>
-        {status === "loadiong" && <Loader />}
+        {status === "loadiong" && <Loaderr />}
 
         {status === "error" && <Error />}
         {status === "ready" && (
@@ -102,6 +110,7 @@ function Question() {
             points={points}
             maxPossiblePoints={maxPossiblePoints}
             highscore={highscore}
+            dispatch={dispatch}
           />
         )}
       </Main>
