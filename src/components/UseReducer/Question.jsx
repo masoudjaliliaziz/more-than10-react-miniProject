@@ -9,6 +9,7 @@ import Loader from "./childComponents/Loader";
 import Quiz from "./childComponents/Quiz";
 import NextBtn from "./childComponents/NextBtn";
 import Progress from "./childComponents/Progress";
+import FinishedScreen from "./childComponents/FinishedScreen";
 
 const initialState = {
   questions: [],
@@ -16,6 +17,7 @@ const initialState = {
   index: 0,
   answer: null,
   points: 0,
+  highscore: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -37,6 +39,13 @@ function reducer(state, action) {
       };
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null };
+    case "finish":
+      return {
+        ...state,
+        status: "finished",
+        highscore:
+          state.points > state.highscore ? state.points : state.highscore,
+      };
     default:
       return state;
   }
@@ -44,7 +53,7 @@ function reducer(state, action) {
 
 function Question() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, questions, index, answer, points } = state;
+  const { status, questions, index, answer, points, highscore } = state;
   useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
@@ -80,8 +89,20 @@ function Question() {
               dispatch={dispatch}
               answer={answer}
             />
-            <NextBtn dispatch={dispatch} answer={answer} />
+            <NextBtn
+              dispatch={dispatch}
+              answer={answer}
+              questionNum={questionNum}
+              index={index}
+            />
           </>
+        )}
+        {status === "finished" && (
+          <FinishedScreen
+            points={points}
+            maxPossiblePoints={maxPossiblePoints}
+            highscore={highscore}
+          />
         )}
       </Main>
     </div>
