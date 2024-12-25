@@ -8,6 +8,7 @@ import StartScreen from "./childComponents/StartScreen";
 import Loader from "./childComponents/Loader";
 import Quiz from "./childComponents/Quiz";
 import NextBtn from "./childComponents/NextBtn";
+import Progress from "./childComponents/Progress";
 
 const initialState = {
   questions: [],
@@ -51,6 +52,10 @@ function Question() {
       .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
   const questionNum = questions.length;
+  const maxPossiblePoints = questions.reduce(
+    (prev, cur) => prev + cur.points,
+    0
+  );
   return (
     <div className="app">
       <Header />
@@ -63,6 +68,13 @@ function Question() {
         )}
         {status === "active" && (
           <>
+            <Progress
+              index={index}
+              questionNum={questionNum}
+              points={points}
+              maxPossiblePoints={maxPossiblePoints}
+              answer={answer}
+            />
             <Quiz
               question={questions[index]}
               dispatch={dispatch}
