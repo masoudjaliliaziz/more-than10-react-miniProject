@@ -1,11 +1,9 @@
 import { list } from "postcss";
 import { useState } from "react";
-import Currency from "./components/CurrencyConverter/Currency";
-import Geo from "./components/customhooksChallange/Geo";
-import DateCounter from "./components/UseReducer/DateCounter";
+import Question from "./components/UseReducer/Question";
 
 function App() {
-  return <DateCounter />;
+  return <Question />;
 }
 
 export default App;
