@@ -11,6 +11,7 @@ import Quiz from "./childComponents/Quiz";
 const initialState = {
   questions: [],
   status: "loading",
+  index: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -25,7 +26,7 @@ function reducer(state, action) {
 
 function Question() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, questions } = state;
+  const { status, questions, index } = state;
   useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
@@ -45,7 +46,7 @@ function Question() {
         {status === "ready" && (
           <StartScreen questionNum={questionNum} dispatch={dispatch} />
         )}
-        {status === "active" && <Quiz />}
+        {status === "active" && <Quiz question={questions[index]} />}
       </Main>
     </div>
   );
