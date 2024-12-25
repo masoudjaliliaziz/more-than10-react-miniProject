@@ -12,6 +12,8 @@ const initialState = {
   questions: [],
   status: "loading",
   index: 0,
+  answer: null,
+  points: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -21,12 +23,24 @@ function reducer(state, action) {
       return { ...state, status: "error" };
     case "start":
       return { ...state, status: "active" };
+    case "newAnswer":
+      const curQuestion = state.questions.at(state.index);
+      return {
+        ...state,
+        answer: action.payload,
+        points:
+          action.payload === curQuestion.correctOption
+            ? state.points + curQuestion.points
+            : state.points,
+      };
+    default:
+      return state;
   }
 }
 
 function Question() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, questions, index } = state;
+  const { status, questions, index, answer, points } = state;
   useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
@@ -34,8 +48,6 @@ function Question() {
       .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
   const questionNum = questions.length;
-  console.log(status);
-  console.log(questions);
   return (
     <div className="app">
       <Header />
@@ -46,7 +58,13 @@ function Question() {
         {status === "ready" && (
           <StartScreen questionNum={questionNum} dispatch={dispatch} />
         )}
-        {status === "active" && <Quiz question={questions[index]} />}
+        {status === "active" && (
+          <Quiz
+            question={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
+        )}
       </Main>
     </div>
   );
