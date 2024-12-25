@@ -1,9 +1,9 @@
 import { list } from "postcss";
 import { useState } from "react";
-import Question from "./components/UseReducer/Question";
+import Bank from "./components/UseReducer/Bank/Bank";
 
 function App() {
-  return <Question />;
+  return <Bank />;
 }
 
 export default App;
