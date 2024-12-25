@@ -11,7 +11,8 @@ import NextBtn from "./childComponents/NextBtn";
 import Progress from "./childComponents/Progress";
 import FinishedScreen from "./childComponents/FinishedScreen";
 import Loaderr from "./childComponents/Loaderr";
-
+import Timer from "./childComponents/Timer";
+const SEC_PER_QUESTION = 30;
 const initialState = {
   questions: [],
   status: "loading",
@@ -19,6 +20,7 @@ const initialState = {
   answer: null,
   points: 0,
   highscore: 0,
+  secondsRemaining: null,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -27,7 +29,11 @@ function reducer(state, action) {
     case "dataFailed":
       return { ...state, status: "error" };
     case "start":
-      return { ...state, status: "active" };
+      return {
+        ...state,
+        status: "active",
+        secondsRemaining: state.questions.length * SEC_PER_QUESTION,
+      };
     case "newAnswer":
       const curQuestion = state.questions.at(state.index);
       return {
@@ -54,6 +60,12 @@ function reducer(state, action) {
         highscore: state.highscore,
         status: "ready",
       };
+    case "tick":
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining === 0 ? "finished" : state.status,
+      };
     default:
       return state;
   }
@@ -61,7 +73,15 @@ function reducer(state, action) {
 
 function Question() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, questions, index, answer, points, highscore } = state;
+  const {
+    status,
+    questions,
+    index,
+    answer,
+    points,
+    highscore,
+    secondsRemaining,
+  } = state;
   useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
@@ -97,6 +117,7 @@ function Question() {
               dispatch={dispatch}
               answer={answer}
             />
+            <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
             <NextBtn
               dispatch={dispatch}
               answer={answer}
