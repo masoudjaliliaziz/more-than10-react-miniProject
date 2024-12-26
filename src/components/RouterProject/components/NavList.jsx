@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
+import styles from "./NavList.module.css";
 function NavList() {
   return (
     <nav>
-      <ul className="flex gap-3 bg-blue-600 items-center justify-around text-2xl font-bold text-white w-6/12 mx-auto p-3 my-10 rounded-lg">
+      <ul className={styles.navbar}>
         <li>
           <NavLink to={"/"}>home</NavLink>
         </li>
@@ -13,6 +13,9 @@ function NavList() {
         </li>
         <li>
           <NavLink to={"/pricing"}>pricing</NavLink>
+        </li>
+        <li>
+          <NavLink to={"/app"}>app</NavLink>
         </li>
       </ul>
     </nav>
