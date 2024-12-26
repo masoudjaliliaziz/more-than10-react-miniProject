@@ -1,7 +1,13 @@
-export default function PageNotFound() {
+import React from "react";
+import NavList from "../components/NavList";
+
+function PageNotFound() {
   return (
     <div>
-      <h1>Page not found 😢</h1>
+      <NavList />
+      PageNotFound
     </div>
   );
 }
+
+export default PageNotFound;

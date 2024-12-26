@@ -1,13 +1,13 @@
 import React from "react";
 import NavList from "../components/NavList";
 
-function Product() {
+function HomePage() {
   return (
     <div>
       <NavList />
-      Product
+      HomePage
     </div>
   );
 }
 
-export default Product;
+export default HomePage;
