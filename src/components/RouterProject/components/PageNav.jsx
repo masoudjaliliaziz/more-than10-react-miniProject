@@ -1,13 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import styles from "./NavList.module.css";
-function NavList() {
+import styles from "./PageNav.module.css";
+import Logo from "./Logo";
+function PageNav() {
   return (
-    <nav>
-      <ul className={styles.navbar}>
-        <li>
-          <NavLink to={"/"}>home</NavLink>
-        </li>
+    <nav className={styles.nav}>
+      <Logo />
+      <ul>
         <li>
           <NavLink to={"/product"}>product</NavLink>
         </li>
@@ -15,11 +14,13 @@ function NavList() {
           <NavLink to={"/pricing"}>pricing</NavLink>
         </li>
         <li>
-          <NavLink to={"/app"}>app</NavLink>
+          <NavLink className={styles.ctaLink} to={"/login"}>
+            login
+          </NavLink>
         </li>
       </ul>
     </nav>
   );
 }
 
-export default NavList;
+export default PageNav;
