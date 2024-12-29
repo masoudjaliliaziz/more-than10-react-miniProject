@@ -3,14 +3,32 @@ import Homepage from "./pages/Homepage";
 import PageNotFound from "./pages/PageNotFound";
 import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
-import NavList from "./components/PageNav";
-import City from "./components/City";
 
 import AppLayout from "./pages/AppLayout";
 import Login from "./pages/Login";
-import Countries from "./components/Countries";
 
+import CityList from "./components/CityList";
+import { useEffect, useState } from "react";
+const BASE_URL = "http://localhost:8000";
 function WorldWise() {
+  const [cities, setCities] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(function () {
+    async function fetchCities() {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`${BASE_URL}/cities`);
+        const data = await res.json();
+        setCities(data);
+      } catch {
+        alert("there was an loading data...");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchCities();
+  }, []);
+
   return (
     <>
       <BrowserRouter>
@@ -20,12 +38,17 @@ function WorldWise() {
           <Route path="pricing" element={<Pricing />} />
           <Route path="login" element={<Login />} />
 
-          <Route path="app" element={<AppLayout />} >
-          <Route index element={<p>list Of cities</p>}/>
-          <Route path="cities" element={<h1>list of cities</h1>}/>
-          <Route path="countries"  element={<h1>list of countries</h1>}/>
-          <Route path="form"  element={<h1>form</h1>}/>
-
+          <Route path="app" element={<AppLayout />}>
+            <Route
+              index
+              element={<CityList cities={cities} isLoading={isLoading} />}
+            />
+            <Route
+              path="cities"
+              element={<CityList cities={cities} isLoading={isLoading} />}
+            />
+            <Route path="countries" element={<h1>list of countries</h1>} />
+            <Route path="form" element={<h1>form</h1>} />
           </Route>
 
           <Route path="*" element={<PageNotFound />} />

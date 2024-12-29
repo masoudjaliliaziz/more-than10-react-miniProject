@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "server": "json-server --watch src/components/UseReducer/data/questions.json --port 8000",
+    "server": "json-server --watch src/components/RouterProject/data/cities.json --port 8000 ",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
