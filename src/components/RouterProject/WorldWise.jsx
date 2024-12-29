@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import PageNotFound from "./pages/PageNotFound";
 import Product from "./pages/Product";
@@ -40,10 +40,7 @@ function WorldWise() {
           <Route path="login" element={<Login />} />
 
           <Route path="app" element={<AppLayout />}>
-            <Route
-              index
-              element={<CityList cities={cities} isLoading={isLoading} />}
-            />
+            <Route index replace element={<Navigate to={"cities"} />} />
             <Route
               path="cities"
               element={<CityList cities={cities} isLoading={isLoading} />}
