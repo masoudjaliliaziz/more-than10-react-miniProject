@@ -2,12 +2,13 @@ import React from "react";
 import styles from "./Sidebar.module.css";
 import Logo from "./Logo";
 import AppNav from "./AppNav";
+import { Outlet } from "react-router-dom";
 function Sidebar() {
   return (
     <div className={styles.sidebar}>
       <Logo />
       <AppNav />
-      <p>list of cities</p>
+      <Outlet/>
       <footer className={styles.footer}>
         <p className={styles.copyRight}>
           &copy; Copyright {new Date().getFullYear()}
