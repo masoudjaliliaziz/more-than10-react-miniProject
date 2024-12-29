@@ -3,7 +3,7 @@ import Homepage from "./pages/Homepage";
 import PageNotFound from "./pages/PageNotFound";
 import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
-
+import Form from "./components/Form";
 import AppLayout from "./pages/AppLayout";
 import Login from "./pages/Login";
 import City from "./components/City";
@@ -53,7 +53,7 @@ function WorldWise() {
               path="countries"
               element={<CountryList cities={cities} isLoading={isLoading} />}
             />
-            <Route path="form" element={<h1>form</h1>} />
+            <Route path="form" element={<Form />} />
           </Route>
 
           <Route path="*" element={<PageNotFound />} />
