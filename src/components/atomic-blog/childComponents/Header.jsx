@@ -1,4 +1,6 @@
 import React from "react";
+import Results from "./Results";
+import SearchPosts from "./SearchPosts";
 
 function Header({ posts, onClearPosts, searchQuery, setSearchQuery }) {
   return (

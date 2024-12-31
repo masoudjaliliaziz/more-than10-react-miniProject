@@ -5,39 +5,11 @@ import Header from "./childComponents/Header";
 import Main from "./childComponents/Main";
 import Footer from "./childComponents/Footer";
 import Archive from "./childComponents/Archive";
-
-function SearchPosts({ searchQuery, setSearchQuery }) {
-  return (
-    <input
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      placeholder="Search posts..."
-    />
-  );
-}
-
 function createRandomPost() {
   return {
     title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
     body: faker.hacker.phrase(),
   };
-}
-
-function Results({ posts }) {
-  return <p>🚀 {posts.length} atomic posts found</p>;
-}
-
-function List({ posts }) {
-  return (
-    <ul>
-      {posts.map((post, i) => (
-        <li key={i}>
-          <h3>{post.title}</h3>
-          <p>{post.body}</p>
-        </li>
-      ))}
-    </ul>
-  );
 }
 
 function Atomic() {
@@ -89,7 +61,7 @@ function Atomic() {
         setSearchQuery={setSearchQuery}
       />
       <Main posts={searchedPosts} onAddPost={handleAddPost} />
-      <Archive onAddPost={handleAddPost} />
+      <Archive onAddPost={handleAddPost} createRandomPost={createRandomPost} />
       <Footer />
     </section>
   );

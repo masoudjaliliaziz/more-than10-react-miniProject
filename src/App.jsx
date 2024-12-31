@@ -1,10 +1,8 @@
 import { list } from "postcss";
 import { useState } from "react";
-import Bank from "./components/UseReducer/Bank/Bank";
-import WorldWise from "./components/RouterProject/WorldWise.jsx";
-
+import Atomic from "./components/atomic-blog/Atomic";
 function App() {
-  return <WorldWise/>;
+  return <Atomic />;
 }
 
 export default App;
