@@ -1,5 +1,7 @@
-import React from "react";
-function List({ posts }) {
+import React, { useContext } from "react";
+import { usePost } from "../customHooks/PostContext";
+function List() {
+  const { posts } = usePost();
   return (
     <ul>
       {posts.map((post, i) => (

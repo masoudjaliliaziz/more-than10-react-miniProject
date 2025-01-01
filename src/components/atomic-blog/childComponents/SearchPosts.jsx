@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { usePost } from "../customHooks/PostContext";
 
-function SearchPosts({ searchQuery, setSearchQuery }) {
+function SearchPosts() {
+  const { searchQuery, setSearchQuery } = usePost();
   return (
     <input
       value={searchQuery}
