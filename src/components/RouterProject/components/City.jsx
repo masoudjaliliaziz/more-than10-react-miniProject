@@ -17,9 +17,9 @@ function City() {
   // TEMP DATA
   const { id } = useParams();
   const { isLoading, getCity, currentCity } = useCities();
-  // const [searchParam, setSearchParams] = useSearchParams();
-  // const lat = searchParam.get("lat");
-  // const lng = searchParam.get("lng");
+  const [searchParam, setSearchParams] = useSearchParams();
+  const lat = searchParam.get("lat");
+  const lng = searchParam.get("lng");
   useEffect(() => {
     getCity(id);
   }, [id]);
