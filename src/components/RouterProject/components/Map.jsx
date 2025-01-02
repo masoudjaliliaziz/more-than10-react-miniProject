@@ -13,14 +13,13 @@ import {
 import { useCities } from "../contexts/CitiesContext";
 import { map } from "leaflet";
 import { useGeolocation } from "../hooks/useGeolocation";
+import { UseUrlPosition } from "../hooks/useUrlPosition";
 
 function Map() {
   const { cities } = useCities();
 
   //get lat and lng from url of any city that we clicked
-  const [searchParam] = useSearchParams();
-  const mapLat = searchParam.get("lat");
-  const mapLng = searchParam.get("lng");
+  const [mapLat, mapLng] = UseUrlPosition();
   const [mapPosition, setMapPosition] = useState([
     35.401718382060736, 49.031097595824775,
   ]);
