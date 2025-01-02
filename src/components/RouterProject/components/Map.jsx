@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Map.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Button from "./Button";
 import {
   MapContainer,
   Marker,
@@ -11,21 +12,42 @@ import {
 } from "react-leaflet";
 import { useCities } from "../contexts/CitiesContext";
 import { map } from "leaflet";
+import { useGeolocation } from "../hooks/useGeolocation";
 
 function Map() {
   const { cities } = useCities();
+
+  //get lat and lng from url of any city that we clicked
   const [searchParam] = useSearchParams();
   const mapLat = searchParam.get("lat");
   const mapLng = searchParam.get("lng");
-
   const [mapPosition, setMapPosition] = useState([
     35.401718382060736, 49.031097595824775,
   ]);
+
+  //effect for syncronize map position with lat and lng that comes from url with react router
   useEffect(() => {
     if (mapLat && mapLng) setMapPosition([mapLat, mapLng]);
   }, [mapLat, mapLng]);
+
+  //use geo location custom hook for getting our own position
+  const {
+    isLoading: isLoadingGeoPosition,
+    getPosition,
+    position: geoPosition,
+  } = useGeolocation();
+  //effect for syncronize the mapposition with the lat and lng that we get from usegeolocation custom hook
+  useEffect(() => {
+    if (geoPosition) setMapPosition([geoPosition.lat, geoPosition.lng]);
+  }, [geoPosition]);
+
   return (
     <div className={styles.mapContainer}>
+      {!geoPosition && (
+        <Button type={"position"} onclick={getPosition}>
+          {isLoadingGeoPosition ? "Loading" : "   use your position"}
+        </Button>
+      )}
       <MapContainer
         className={styles.map}
         center={mapPosition}
