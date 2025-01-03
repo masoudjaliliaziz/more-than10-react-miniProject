@@ -13,16 +13,20 @@ function reducer(state, action) {
         ...state,
         isLoading: true,
       };
+
     case "cities/loaded":
       return { ...state, isLoading: false, cities: action.payload };
+
     case "cities/current":
       return { ...state, isLoading: false, currentCity: action.payload };
+
     case "cities/add":
       return {
         ...state,
         isLoading: false,
         cities: [...state.cities, action.payload],
       };
+
     case "cities/remove":
       return {
         ...state,
@@ -32,11 +36,9 @@ function reducer(state, action) {
   }
 }
 function CitiesProvider({ children }) {
-  // const [cities, setCities] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [currentCity, setCurrentCity] = useState({});
   const [state, dispatch] = useReducer(reducer, initialState);
   const { cities, isLoading, currentCity } = state;
+
   useEffect(function () {
     async function fetchCities() {
       dispatch({ type: "loading" });
@@ -50,7 +52,9 @@ function CitiesProvider({ children }) {
     }
     fetchCities();
   }, []);
+
   async function getCity(id) {
+    if (Number(id) === currentCity.id) return;
     dispatch({ type: "loading" });
     try {
       const res = await fetch(`${BASE_URL}/cities/${id}`);
@@ -88,6 +92,7 @@ function CitiesProvider({ children }) {
       alert("there was an loading data...");
     }
   }
+
   return (
     <CitiesContext.Provider
       value={{
@@ -103,6 +108,7 @@ function CitiesProvider({ children }) {
     </CitiesContext.Provider>
   );
 }
+
 function useCities() {
   const context = useContext(CitiesContext);
   return context;
