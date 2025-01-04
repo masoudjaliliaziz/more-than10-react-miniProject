@@ -11,6 +11,7 @@ import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
 import { CitiesProvider } from "./contexts/CitiesContext";
 import { AuthContextProvider } from "./contexts/FakeAuthContext";
+import ProtectedRouter from "./pages/ProtectedRouter";
 
 function WorldWise() {
   return (
@@ -24,7 +25,14 @@ function WorldWise() {
               <Route path="product" element={<Product />} />
               <Route path="pricing" element={<Pricing />} />
               <Route path="login" element={<Login />} />
-              <Route path="app" element={<AppLayout />}>
+              <Route
+                path="app"
+                element={
+                  <ProtectedRouter>
+                    <AppLayout />
+                  </ProtectedRouter>
+                }
+              >
                 <Route index replace element={<Navigate to={"cities"} />} />
                 <Route path="cities" element={<CityList />} />
                 <Route path="cities/:id" element={<City />} />
