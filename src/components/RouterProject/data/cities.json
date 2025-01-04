@@ -37,27 +37,15 @@
       "id": "98443197"
     },
     {
-      "id": "1e4f",
-      "cityName": "Macao",
-      "country": "Portugal",
-      "date": "2025-01-03T10:38:18.240Z",
-      "notes": "Test",
-      "emoji": "🇵🇹",
+      "id": "2293",
+      "cityName": "Qorveh",
+      "country": "Iran (Islamic Republic of)",
+      "date": "2025-01-04T19:44:15.488Z",
+      "notes": "",
+      "emoji": "🇮🇷",
       "position": {
-        "lat": "39.63953756436671",
-        "lng": "-7.992170556715851"
-      }
-    },
-    {
-      "id": "e162",
-      "cityName": "Badajozdd",
-      "country": "Spain",
-      "date": "2025-01-03T10:39:09.053Z",
-      "notes": "dd",
-      "emoji": "🇪🇸",
-      "position": {
-        "lat": "38.82259097617713",
-        "lng": "-6.629581989105512"
+        "lat": "35.42212563316194",
+        "lng": "49.11221753118339"
       }
     }
   ]

@@ -13,28 +13,33 @@ const FAKE_USER = {
   avatar: "https://i.pravatar.cc/100?u=zz",
 };
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "login":
+      return { ...state, user: action.payload, isAuth: true };
+    case "logout":
+      return { ...state, user: null, isAuth: false };
+  }
+}
+
 //provider------------------
 
 function AuthContextProvider({ children }) {
-  const [{ user, isAuth }, dispatch] = useReducer(reducer, initialState);
-  function reducer(action, state) {
-    switch (action.type) {
-      case "login":
-        return { ...state, user: action.payload, isAuth: true };
-      case "logout":
-        return initialState;
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { user, isAuth } = state;
+  function login(email, password) {
+    if (email === FAKE_USER.email && password === FAKE_USER.password) {
+      dispatch({ type: "login", payload: FAKE_USER });
+    } else {
+      console.log("fuck you");
     }
   }
   function logout() {
     dispatch({ type: "logout" });
   }
-  function login(user) {
-    if (user.name === FAKE_USER.name && user.email === FAKE_USER.email)
-      dispatch({ type: "login", payload: user });
-  }
 
   return (
-    <AuthContext.Provider value={(login, logout, user, isAuth)}>
+    <AuthContext.Provider value={{ user, login, logout, isAuth }}>
       {children}
     </AuthContext.Provider>
   );
@@ -42,6 +47,8 @@ function AuthContextProvider({ children }) {
 
 function useAuth() {
   const context = useContext(AuthContext);
+  if (context === undefined)
+    throw new Error("AuthContext was used outside AuthProvider");
   return context;
 }
 
