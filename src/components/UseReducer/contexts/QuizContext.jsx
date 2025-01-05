@@ -1,7 +1,11 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
 const QuizContext = createContext();
+
 function QuizProvider({ children }) {
+  //every question time required--------
   const SEC_PER_QUESTION = 30;
+
+  //initial state of useReducer stateManagement hook
   const initialState = {
     questions: [],
     status: "loading",
@@ -12,8 +16,18 @@ function QuizProvider({ children }) {
     secondsRemaining: null,
   };
 
+  //for fetching data -------------------
+  useEffect(function () {
+    fetch("http://localhost:8000/questions")
+      .then((res) => res.json())
+      .then((data) => dispatch({ type: "dataRecived", payload: data }))
+      .catch((err) => dispatch({ type: "dataFailed" }));
+  }, []);
+
+  //use reducer hook ------------------
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  //reducer function for handling the states value ---------
   function reducer(state, action) {
     switch (action.type) {
       case "dataRecived":
@@ -63,6 +77,7 @@ function QuizProvider({ children }) {
     }
   }
 
+  //detructure the states from useReducer state-------------
   const {
     status,
     questions,
@@ -72,11 +87,15 @@ function QuizProvider({ children }) {
     highscore,
     secondsRemaining,
   } = state;
+
+  //two drive state -----------------------------
   const questionNum = questions.length;
   const maxPossiblePoints = questions.reduce(
     (prev, cur) => prev + cur.points,
     0
   );
+
+  //  JSX for our context provider--------------------
   return (
     <QuizContext.Provider
       value={{
@@ -96,6 +115,8 @@ function QuizProvider({ children }) {
     </QuizContext.Provider>
   );
 }
+
+//our custom hook ------------------------------------
 function useQuiz() {
   const context = useContext(QuizContext);
   if (!context) {

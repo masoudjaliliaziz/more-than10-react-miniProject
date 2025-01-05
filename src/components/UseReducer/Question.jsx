@@ -8,12 +8,6 @@ function Question() {
   const { dispatch } = useQuiz();
 
   //for loading data------------------
-  useEffect(function () {
-    fetch("http://localhost:8000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataRecived", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
-  }, []);
 
   //JSX-----------------------------
   return (
